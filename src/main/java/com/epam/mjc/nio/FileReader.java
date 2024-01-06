@@ -3,6 +3,7 @@ package com.epam.mjc.nio;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -10,15 +11,12 @@ import java.nio.file.Path;
 public class FileReader {
 
     public Profile getDataFromFile(File file) {
-        String input;
-        try {
-            input = Files.readString(Path.of(file.getPath()));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        String input = null;
+        try (InputStream inputStream = Files.newInputStream(Path.of(file.getPath()))) {
+            input = new String(inputStream.readAllBytes());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-
 
         String[] values = new String[4];
         String[] lines = input.split("\r\n");
