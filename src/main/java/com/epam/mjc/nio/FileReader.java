@@ -1,7 +1,6 @@
 package com.epam.mjc.nio;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -19,7 +18,12 @@ public class FileReader {
         }
 
         String[] values = new String[4];
-        String[] lines = input.split("\r\n");
+        String[] lines = null;
+        try {
+            lines = input.split("\r\n");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         int i = 0;
         for (String line : lines) {
             int index = line.indexOf(':');
