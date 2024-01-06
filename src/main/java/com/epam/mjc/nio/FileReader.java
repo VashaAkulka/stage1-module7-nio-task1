@@ -13,23 +13,22 @@ public class FileReader {
         String input = null;
         try (InputStream inputStream = Files.newInputStream(Path.of(file.getPath()))) {
             input = new String(inputStream.readAllBytes());
+
+
+            String[] values = new String[4];
+            String[] lines = input.split("\r\n");
+            int i = 0;
+            for (String line : lines) {
+                int index = line.indexOf(':');
+                values[i++] = line.substring(index + 1).trim();
+            }
+
+            return new Profile(values[0], Integer.valueOf(values[1]), values[2], Long.valueOf(values[3]));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        String[] values = new String[4];
-        String[] lines = null;
-        try {
-            lines = input.split("\r\n");
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        int i = 0;
-        for (String line : lines) {
-            int index = line.indexOf(':');
-            values[i++] = line.substring(index + 1).trim();
-        }
-
-        return new Profile(values[0], Integer.valueOf(values[1]), values[2], Long.valueOf(values[3]));
+        return null;
     }
 }
